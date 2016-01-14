@@ -1,0 +1,10 @@
+{
+    "widget":{
+        "name":"Формирование Excel-файла и сохранение в Google Drive",
+        "short_description":"Created by tracebs.ru",
+        "description":"<a href='http://tracebs.ru'>tracebs.ru</a>"
+    },
+    "settings":{
+        "tst":"tst"
+    }       
+}

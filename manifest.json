@@ -1,0 +1,28 @@
+{
+    "widget":{
+            "name": "CalgelTask",
+            "description": "Создание задач из сделки",
+            "short_description": "Создание задач из сделки",
+            "code": "calgeltaskv1",
+            "secret_key": "4004294ed1ec5758a024fec77eee762f3d99707ed2f7322308bf858057230291",
+            "version": "1.5.3",
+            "interface_version": 2,
+            "init_once": false,
+            "locale":[
+                    "ru"
+                    ],
+            "installation": true
+            },
+    "locations":[
+            "lcard-1",
+            "settings"
+            ],
+    "settings":{   
+        "tst":{
+            "name": "settings.tst",
+            "type": "text", 
+            "required": false
+        }
+    }
+
+}
