@@ -108,7 +108,7 @@ define(['jquery'], function($){
 											//создаем задачу
 											console.log( 'task date:'+ i24 + " = " + today);
 											var tilltime = today.getTime()/1000;
-											tilltime = tilltime - 10800;
+											tilltime = tilltime - 10800-1; //отнимаем 3 часа чтобы поместить задачу в наш часовой пояс и 1 секунду чтобы время было 23:59
 											//=====рабочий код - закомментирован чтобы не создавать лишних сущностей										
 										
 											tasks1 = tasks1 + '{"element_id":'+self.leadid+',"element_type":2,"task_type":1,"text":"'+ strtmp123+'","responsible_user_id":'+ruserid+',"complete_till":'+ tilltime+'},';
@@ -121,7 +121,7 @@ define(['jquery'], function($){
 											today = self.callbacks.getnext2812(today,jsonstr);
 											//создаем задачу
 											var tilltime = today.getTime()/1000;
-											tilltime = tilltime - 10800;
+											tilltime = tilltime - 10800-1;
 											console.log( 'task date:'+ i24 + " = " + today);
 											//=====рабочий код - закомментирован чтобы не создавать лишних сущностей
 										
