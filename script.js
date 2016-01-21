@@ -91,62 +91,71 @@ define(['jquery'], function($){
 							tasks1 = "";
 							//tasks1 = [];
 							//=====забег в цикле по числу рабочих дней ================================
-							for (i24 = 0; i24 < n; i24++) {
-								//for (i25 = 0; i25 < 10000; i25++) {
-									//doing pause
-								//	i26 = ""+i25;
-								//}
-								varr = self.callbacks.checkdate2812(today,jsonstr);
-								if (varr==true) {
-									//создаем задачу
-									console.log( 'task date:'+ i24 + " = " + today);
-									var tilltime = today.getTime()/1000;
-									//=====рабочий код - закомментирован чтобы не создавать лишних сущностей
-									strtmp123 = self.zfullname;
-									//strtmp123 = "some text";
-									tasks1 = tasks1 + '{"element_id":'+self.leadid+',"element_type":2,"task_type":1,"text":"'+ strtmp123+'","responsible_user_id":'+ruserid+',"complete_till":'+ tilltime+'},';
-
-									//=====рабочий код - закомментирован чтобы не создавать лишних сущностей
-									//ставим новую дату
-									today.setDate(today.getDate() + 1);
+							if (typeof(self.leadid) == "undefined") {
+								alert('Обработка остановлена! Причина:Не удалось получить данные об идентификаторе сделки.');
+							} else {
+								strtmp123 = self.zfullname;
+								if (typeof(self.zfullname) == "undefined"||(strtmp123==="")) {
+									alert('Обработка остановлена! Причина:Нет данных контакта.');
 								} else {
-									//дата занята - получаем слудующую свободную
-									today = self.callbacks.getnext2812(today,jsonstr);
-									//создаем задачу
-									var tilltime = today.getTime()/1000;
-									console.log( 'task date:'+ i24 + " = " + today);
-									//=====рабочий код - закомментирован чтобы не создавать лишних сущностей
-									strtmp123 = self.zfullname;
-									//strtmp123 = "some text";
-									tasks1 = tasks1 + '{"element_id":'+self.leadid+',"element_type":2,"task_type":1,"text":"'+ strtmp123+'","responsible_user_id":'+ruserid+',"complete_till":'+ tilltime+'},';
-									//=====рабочий код - закомментирован чтобы не создавать лишних сущностей
-									//ставим новую дату
-									today.setDate(today.getDate() + 1);
+									for (i24 = 0; i24 < n; i24++) {
+									//for (i25 = 0; i25 < 10000; i25++) {
+										//doing pause
+									//	i26 = ""+i25;
+									//}
+										varr = self.callbacks.checkdate2812(today,jsonstr);
+										if (varr==true) {
+											//создаем задачу
+											console.log( 'task date:'+ i24 + " = " + today);
+											var tilltime = today.getTime()/1000;
+											tilltime = tilltime - 10800;
+											//=====рабочий код - закомментирован чтобы не создавать лишних сущностей										
+										
+											tasks1 = tasks1 + '{"element_id":'+self.leadid+',"element_type":2,"task_type":1,"text":"'+ strtmp123+'","responsible_user_id":'+ruserid+',"complete_till":'+ tilltime+'},';
+
+											//=====рабочий код - закомментирован чтобы не создавать лишних сущностей
+											//ставим новую дату
+											today.setDate(today.getDate() + 1);
+										} else {
+											//дата занята - получаем слудующую свободную
+											today = self.callbacks.getnext2812(today,jsonstr);
+											//создаем задачу
+											var tilltime = today.getTime()/1000;
+											tilltime = tilltime - 10800;
+											console.log( 'task date:'+ i24 + " = " + today);
+											//=====рабочий код - закомментирован чтобы не создавать лишних сущностей
+										
+											tasks1 = tasks1 + '{"element_id":'+self.leadid+',"element_type":2,"task_type":1,"text":"'+ strtmp123+'","responsible_user_id":'+ruserid+',"complete_till":'+ tilltime+'},';
+											//=====рабочий код - закомментирован чтобы не создавать лишних сущностей
+											//ставим новую дату
+											today.setDate(today.getDate() + 1);
+										}
+	
+									} //end for
+									//обрезаем у строки последнюю запятую
+
+									intleng = tasks1.length - 1;
+									tasks1 = tasks1.substring(0,intleng);
+									tasks1 = '{"request":{"tasks":{"add":['+tasks1+']}}}';
+									console.log("Start POST new1:" + tasks1);
+									jobj = JSON.parse(tasks1);
+									console.log("Start POST new2");
+									strjdon12 = "" + JSON.stringify(jobj);
+									console.log("Start POST new3:" + strjdon12);
+									//создание сделок пачкой
+									$.post(
+										"https://calgelacademy.amocrm.ru/private/api/v2/json/tasks/set",
+										jobj,
+										function( data ) {
+											console.log( 'Res:'+JSON.stringify(data) );
+										},
+										"json"
+									);
+		
+									//обновляем окно
+									setTimeout(function() {window.location.reload();}, 1000); //обновим страничку через 1 сек
 								}
-
-							} //end for
-							//обрезаем у строки последнюю запятую
-
-							intleng = tasks1.length - 1;
-							tasks1 = tasks1.substring(0,intleng);
-							tasks1 = '{"request":{"tasks":{"add":['+tasks1+']}}}';
-							console.log("Start POST new1:" + tasks1);
-							jobj = JSON.parse(tasks1);
-							console.log("Start POST new2");
-							strjdon12 = "" + JSON.stringify(jobj);
-							console.log("Start POST new3:" + strjdon12);
-							//создание сделок пачкой
-							$.post(
-								"https://calgelacademy.amocrm.ru/private/api/v2/json/tasks/set",
-								jobj,
-								function( data ) {
-									console.log( 'Res:'+data );
-								},
-								"json"
-							);
-
-							//обновляем окно
-							setTimeout(function() {window.location.reload();}, 1000); //обновим страничку через 1 сек
+							}
 						},
 						'json'
 					);
@@ -196,7 +205,9 @@ define(['jquery'], function($){
 					self.monthnum = "" + (today.getMonth()+1); //January is 0!
 					self.yearnum = "" + today.getFullYear();
 					self.startdogdate = $('input[name="CFV[685758]"]').val(); //дата начала обучения
-					self.leadid = $('input[name="MAIN_ID"]').val(); //id сделки MAIN_ID или lead_id
+					
+					self.leadid = $('input[name="lead_id"]').val(); //id сделки lead_id
+					
 					self.zfullname = $('input[name="contact[NAME]"]').val();
 					tmpwdays = $('input[name="CFV[813354]"]').val();
 					if (tmpwdays=='1948330') {
